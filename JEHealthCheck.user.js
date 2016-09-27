@@ -4,8 +4,8 @@
 // @version      1.6
 // @description  Check the ratings.food.gov for restaurants on just eat and hungry house
 // @author       Lisa Croxford
-// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/async/1.4.2/async.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/async/2.0.1/async.min.js
 // @match        http://www.just-eat.co.uk/*
 // @match        https://www.just-eat.co.uk/*
 // @match        http://hungryouse.co.uk/*
@@ -232,12 +232,11 @@ var JustEat = {
     processSearchResult: function (el, done) {
 
         console.log('processSearchResult');
+        var address = normalizeAddress($(el).find('p.c-restaurant__address').text());
+        var name = $(el).find('h2[itemprop="name"]').text().trim();
+        var id = $(el).attr('data-restaurant-id');
 
-        var address = normalizeAddress($(el).find('p.address').text());
-        var name = $(el).find('h2.name').text().trim();
-        var id = $($(el).parents('.restaurant')[0]).attr('data-restaurant-id');
-
-        console.log(name, address);
+        console.log(id, name, address);
 
         var ratingEl = $('<a class="hygieneRating hygieneRatingLoading"></a>');
         $(el).find('p.viewMenu, p.preOrderButton').append(ratingEl);
@@ -300,7 +299,7 @@ var JustEat = {
         $('head').append('<style>' + css + '</style>');
 
         this.addSortOption();
-        async.eachLimit($('.restaurantInner').get(), 5, this.processSearchResult, this.sort);
+        async.eachLimit($('.c-restaurant').get(), 5, this.processSearchResult, this.sort);
         $('.restaurant-info-detail').each(this.processMenuPage);
 
     }
@@ -441,6 +440,7 @@ var HungryHouse = {
 try {
     switch (window.location.host) {
         case 'www.just-eat.co.uk':
+            console.log('just eat');
             JustEat.initialize();
             JustEat.sort();
             break;
