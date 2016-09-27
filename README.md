@@ -11,9 +11,9 @@ This is a re-write of a Google Chrome extension that is no longer maintained, an
 # Chrome How-To:
 
 1. Install the TamperMonkey extension: [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
-2. [Click this link to install JE Health Check](https://github.com/lisa-lionheart/JustEatHealthCheck/raw/master/JEHealthCheck.user.js)
+2. [Click this link to install JE Health Check](https://github.com/binarykitten/JustEatHealthCheck/raw/master/JEHealthCheck.user.js)
 
 # Firefox How-To:
 
 1. Install the GreaseMonkey addon: [here](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (browser restart required)
-2. [Click this link to install JE Health Check](https://github.com/lisa-lionheart/JustEatHealthCheck/raw/master/JEHealthCheck.user.js)
+2. [Click this link to install JE Health Check](https://github.com/binarykitten/JustEatHealthCheck/raw/master/JEHealthCheck.user.js)
