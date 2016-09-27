@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Just Eat hygiene Check
 // @namespace    https://github.com/lisa-lionheart/JustEatHealthCheck
-// @version      2.0
+// @version      2.0.1
 // @description  Check the ratings.food.gov for restaurants on just eat and hungry house
 // @author       Lisa Croxford
+// @author       Kathryn Reeve
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/async/2.0.1/async.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js
@@ -145,7 +146,7 @@ function getValidCacheItem(id) {
 
 function lookup(id, name, address, done) {
 
-    var result = null; //getValidCacheItem(id);
+    var result = getValidCacheItem(id);
     if (result) {
         return done(null, result);
     }
@@ -217,6 +218,9 @@ var SitesCommon = {
             } else {
                 ratingEl.attr('data-value', result.rating);
                 var span = $('<span>').css('backgroundImage', 'url("' + ratingsImg[result.rating] + '")');
+                if (typeof result.lastcheck === 'string') {
+                    result.lastcheck = new Date(result.lastcheck);
+                }
                 ratingEl.text(result.lastcheck.toString('MMMM dS yyyy'));
                 ratingEl.prepend(span);
                 ratingEl.attr('href', result.link);
@@ -252,7 +256,7 @@ var JustEat = {
         ;
 
         hygiene_debug && console.log(id, name, address);
-        $el.find('.c-restaurant__distance').prepend(ratingEl);
+        $el.prepend(ratingEl);
 
         lookup(id, name, address, SitesCommon.updateBadgeCallback('small', ratingEl, done));
     },
@@ -297,7 +301,7 @@ var JustEat = {
         var sortOption = '<li class="hygienerating"><a href="' + window.location.pathname + '?so=hygiene"><span class="o-radio"></span>Hygiene Rating</a></li>';
         var filterList = $('.c-serp-filter__list ul');
         filterList.append(sortOption);
-        hygiene_debug && console.log(window.location);
+        console.log(window.location);
         if (window.location.href.indexOf('?so=hygiene') !== -1) {
             filterList.find('li.is-selected').removeClass('is-selected').removeAttr('data-ft');
             filterList.find('li.hygienerating').addClass('is-selected').attr('data-ft', 'selectedFilter');
@@ -307,12 +311,16 @@ var JustEat = {
     initialize: function () {
         var css = '';
         css += '.hygieneRatingLoading { background-image: url(' + ajaxLoader + '); backgound-repeat: no-repeat !important }';
-        css += '.hygieneRating span { display: block; width: 120px !important; height: 61px; margin-bottom:5px; background-color: white !important; min-height: 38px; right: 9px; top: 52px; background-position: center; }';
-        css += '.hygieneRating { display: block; }';
-        css += '.hygieneRatingBig { display: block; width: 100% !important; min-height: 150px; background-position: center; background-repeat: no-repeat }';
-        css += 'div.c-restaurant { height:120px; }';
-        css += '.c-restaurant__distance { text-align:right; bottom: 5px;}';
-        //css += '.hygieneRating[data';
+        css += '.hygieneRating span { display: block; width: 120px !important; height: 61px; margin-bottom:5px; }';
+        css += '.hygieneRating { display: block; position: absolute; bottom: 30px; right: 0; text-align: right; font-weight: bold;}';
+        css += 'div.c-restaurant { height: 120px;}';
+        css += '.c-restaurant__distance { bottom: 6px; }';
+
+        css += '@media (min-width: 1025px) {';
+        css += '.hygieneRating { bottom:10px; }';
+        css += '.c-restaurant__details { bottom: 100px; text-align: right;}';
+        css += '.c-restaurant .o-tile__details { height: 100%; }';
+        css += '}';
 
         $('head').append('<style>' + css + '</style>');
 
