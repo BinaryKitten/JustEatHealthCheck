@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         Just Eat hygiene Check
 // @namespace    https://github.com/binarykitten/JustEatHealthCheck
-// @version      2.0.2
+// @version      2.0.3
+// @updateURL    https://raw.githubusercontent.com/binarykitten/JustEatHealthCheck/master/JEHealthCheck.user.js
+// @supportURL   https://github.com/BinaryKitten/JustEatHealthCheck/issues
 // @description  Check the ratings.food.gov for restaurants on just eat and hungry house
 // @author       Kathryn Reeve (Previously Lisa Croxford)
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js
@@ -330,7 +332,6 @@ var JustEat = {
     }
 };
 
-
 var HungryHouse = {
 
     processMenuPage: function () {
@@ -460,7 +461,6 @@ var HungryHouse = {
         setInterval(this.pollForNewSearchItems, 500);
     }
 };
-
 
 try {
     switch (window.location.host) {
